@@ -12,7 +12,7 @@ import Statistics from '../components/Statistics';
 export default function Home() {
   // Home Page
   const hero = {
-    title: 'Secure, defend, and thrive everywhere',
+    title: 'Bringing peace to networks',
     subtitle:
       'We safeguard your data, systems, and networks with cutting-edge cybersecurity solutions. Our platform empowers businesses to stay resilient, compliant, and ready for the future.',
     primaryButtonText: 'Get Started Today',
@@ -20,14 +20,6 @@ export default function Home() {
     heroImage: '/images/hero/hero-main.jpg',
     heroImageAlt: 'Netpoleon - Innovative Technology Solutions',
   };
-
-  console.log('Home page rendering with hero props:', hero);
-
-  // const about = {
-  //   title: "About Netpoleon",
-  //   description:
-  //     "We are a team of passionate innovators dedicated to helping businesses thrive in the digital age. Our mission is to deliver exceptional solutions that drive growth and create lasting impact.",
-  // };
 
   const imageTextSections = [
     {
@@ -41,32 +33,6 @@ export default function Home() {
       ctaLink: '#',
     },
   ];
-
-  // const info = {
-  //   title: "Why Choose Netpoleon?",
-  //   points: [
-  //     {
-  //       id: 1,
-  //       title: "Expert Team",
-  //       description:
-  //         "Our experienced developers and designers deliver exceptional results.",
-  //     },
-  //     {
-  //       id: 2,
-  //       title: "Quality Assurance",
-  //       description:
-  //         "Rigorous testing ensures your project meets the highest standards.",
-  //     },
-  //     {
-  //       id: 3,
-  //       title: "Ongoing Support",
-  //       description:
-  //         "We provide continuous support and maintenance for all our projects.",
-  //     },
-  //   ],
-  //   image: "/images/why-choose-us.webp",
-  //   imageAlt: "Netpoleon team working on innovative solutions",
-  // };
 
   const news = {
     title: 'Latest News & Insights',
