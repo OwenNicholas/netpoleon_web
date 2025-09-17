@@ -112,7 +112,7 @@ export default function VendorCarousel({ title }: VendorCarouselProps) {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-2xl font-normal text-gray-900 mb-8 font-inter">
+          <h2 className="text-2xl font-bold text-gray-900 mb-8 font-inter">
             {title}
           </h2>
         </motion.div>

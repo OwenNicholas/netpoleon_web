@@ -11,7 +11,11 @@ export default function ImageTextSection({
   ctaText = '• View all our sectors',
 }: ImageTextSectionProps) {
   return (
-    <section className="pt-15 pb-3 -mb-50 bg-white relative overflow-hidden">
+    <section className="pt-15 pb-3 -mb-50 relative overflow-hidden">
+      {/* White background for left side */}
+      <div className="absolute inset-0 bg-white w-1/20"></div>
+      {/* Orange background for right side */}
+      <div className="absolute inset-0 bg-orange-100 w-19/20 left-1/20"></div>
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Title with CTA Button */}
         <motion.div
@@ -90,7 +94,7 @@ export default function ImageTextSection({
           <div className="flex-1 grid md:grid-cols-3 gap-6">
             {/* Smart Logistics Card */}
             <motion.div
-              className="bg-orange-100 rounded-2xl p-6 relative overflow-hidden flex flex-col h-120"
+              className="bg-orange-200 rounded-2xl p-6 relative overflow-hidden flex flex-col h-120"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
@@ -179,7 +183,7 @@ export default function ImageTextSection({
 
             {/* Smart Industry Card */}
             <motion.div
-              className="bg-orange-100 rounded-2xl p-6 relative overflow-hidden flex flex-col h-120"
+              className="bg-orange-200 rounded-2xl p-6 relative overflow-hidden flex flex-col h-120"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
@@ -280,7 +284,7 @@ export default function ImageTextSection({
 
             {/* Smart City Card */}
             <motion.div
-              className="bg-orange-100 rounded-2xl p-6 relative overflow-hidden flex flex-col h-120"
+              className="bg-orange-200 rounded-2xl p-6 relative overflow-hidden flex flex-col h-120"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.0 }}

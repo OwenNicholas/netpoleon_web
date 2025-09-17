@@ -96,10 +96,10 @@ export default function Statistics() {
   return (
     <div
       ref={ref}
-      className="relative w-full min-h-[500px] bg-gradient-to-br from-orange-50 via-amber-50 to-orange-100 py-16"
+      className="relative w-full min-h-[500px] bg-orange-100 py-16"
     >
       {/* Statistics Content */}
-      <div className="relative z-10 max-w-6xl mx-auto px-8 ml-120 flex items-center">
+      <div className="relative z-10 max-w-6xl mx-auto px-8 ml-70 flex items-center">
         {/* Statistics Text */}
         <div className="flex-1">
           <div className="mb-12">

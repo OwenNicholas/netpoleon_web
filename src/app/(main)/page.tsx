@@ -81,8 +81,8 @@ export default function Home() {
       {imageTextSections.map((section, idx) => (
         <ImageTextSection key={idx} {...section} />
       ))}
-      <Statistics />
       <GraphSection />
+      <Statistics />
       <NewsSection {...news} />
     </div>
   );

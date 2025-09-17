@@ -59,7 +59,7 @@ export default function GraphSection() {
                   {filteredVendors.map(vendor => (
                     <div
                       key={vendor.id}
-                      className="flex items-center justify-center p-2 bg-gray-50 rounded-lg border hover:shadow-md transition-shadow"
+                      className="flex items-center justify-center p-2 bg-gray-50 rounded-lg hover:shadow-md transition-shadow"
                     >
                       {vendor.logo_url ? (
                         <Image

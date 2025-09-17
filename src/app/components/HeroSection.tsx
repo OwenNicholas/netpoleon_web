@@ -27,11 +27,13 @@ export default function HeroSection({ title }: HeroSectionProps) {
          */}
       </div>
 
-      {/* Globe in top right corner of whole screen */}
-      <Globe className="absolute top-4 right-4 opacity-100 z-0 w-96 h-96 md:w-[28rem] md:h-[28rem] lg:w-[32rem] lg:h-[32rem]" />
+      {/* Globe centered on the right side of second line title */}
+      <div className="absolute top-1/2 -right-10 transform -translate-y-1/2 translate-x-1/2 z-0">
+        <Globe className="w-[42rem] h-[42rem] md:w-[52rem] md:h-[52rem] lg:w-[62rem] lg:h-[62rem] xl:w-[72rem] xl:h-[72rem]" />
+      </div>
 
       {/* Main content */}
-      <div className="relative z-10 max-w-full mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="relative z-10 max-w-full mx-auto px-4 sm:px-6 lg:px-8 text-center -mt-16 mt-2">
         {/* 
         <svg class="blob" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
           <g transform="translate(300,300)">
@@ -46,15 +48,15 @@ export default function HeroSection({ title }: HeroSectionProps) {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -50 }}
-            transition={{ duration: 1, ease: 'easeOut' }}
+            transition={{ duration: 1, delay: 2.0, ease: 'easeOut' }}
           >
             {/* Split Headline */}
-            <div className="mb-8 text-left pt-8 -ml-16 md:-ml-24 lg:-ml-32">
+            <div className="mb-8 text-left pt-0 -ml-16 md:-ml-24 lg:-ml-32">
               <motion.h1
                 className="text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] font-bold text-gray-900 leading-tight tracking-tight mb-0 whitespace-nowrap text-left"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: 'easeOut' }}
+                transition={{ duration: 0.8, delay: 2.2, ease: 'easeOut' }}
               >
                 {firstLine
                   .split(' ')
@@ -68,7 +70,7 @@ export default function HeroSection({ title }: HeroSectionProps) {
                       }}
                       transition={{
                         duration: 0.4,
-                        delay: index * 0.4,
+                        delay: 2.2 + index * 0.4,
                         ease: 'easeOut',
                       }}
                       className="inline-block"
@@ -92,7 +94,7 @@ export default function HeroSection({ title }: HeroSectionProps) {
                 className="flex items-center justify-start whitespace-nowrap relative"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+                transition={{ duration: 0.8, delay: 2.4, ease: 'easeOut' }}
               >
                 {/* Decorative line - absolutely positioned */}
                 <motion.div
@@ -102,6 +104,7 @@ export default function HeroSection({ title }: HeroSectionProps) {
                   transition={{
                     duration: 1.5,
                     delay:
+                      2.2 +
                       (firstLine.split(' ').length +
                         secondLine.split(' ').length) *
                         0.4 +
@@ -124,7 +127,9 @@ export default function HeroSection({ title }: HeroSectionProps) {
                         transition={{
                           duration: 0.4,
                           delay:
-                            firstLine.split(' ').length * 0.4 + index * 0.4,
+                            2.2 +
+                            firstLine.split(' ').length * 0.4 +
+                            index * 0.4,
                           ease: 'easeOut',
                         }}
                         className="inline-block"
@@ -153,13 +158,14 @@ export default function HeroSection({ title }: HeroSectionProps) {
               transition={{
                 duration: 0.8,
                 delay:
+                  2.2 +
                   (firstLine.split(' ').length + secondLine.split(' ').length) *
                     0.4 +
                   0.2,
                 ease: 'easeOut',
               }}
             >
-              <p className="text-gray-700 font-normal leading-relaxed mb-6 whitespace-pre-line">
+              <p className="text-gray-700 font-normal leading-relaxed mb-2 whitespace-pre-line">
                 {(() => {
                   const text =
                     'Netpoleon develops and delivers advanced cybersecurity solutions, dedicated to protecting enterprises and critical industries from evolving digital threats.';
@@ -201,6 +207,7 @@ export default function HeroSection({ title }: HeroSectionProps) {
               transition={{
                 duration: 0.8,
                 delay:
+                  2.2 +
                   (firstLine.split(' ').length + secondLine.split(' ').length) *
                     0.4 +
                   0.4,
