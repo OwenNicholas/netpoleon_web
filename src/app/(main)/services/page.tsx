@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { getAllServiceIds, getServiceData } from '@/data/services-data';
 
 const whatWeDo = [
   {
@@ -35,80 +36,36 @@ const whatWeDo = [
   },
 ];
 
-const services = [
-  {
-    id: 1,
-    slug: 'channel-sales-enablement',
-    title: 'Channel Sales & Enablement',
-    description:
-      'Comprehensive channel sales strategies and enablement programs to maximize your distribution network effectiveness.',
-    icon: '/icons/Channel Sales & Enablement.png',
-  },
-  {
-    id: 2,
-    slug: 'operations-logistics',
-    title: 'Operations & Logistics Services',
-    description:
-      'End-to-end operational excellence and logistics solutions to streamline your business processes.',
-    icon: '/icons/Operations & Logistics Services.png',
-  },
-  {
-    id: 3,
-    slug: 'pre-sales-consultation',
-    title: 'Pre-Sales POV, Consultation & Professional Services',
-    description:
-      'Strategic pre-sales consultation and professional services to enhance customer engagement and solution design.',
-    icon: '/icons/Pre-Sales POV, Consultation & Professional Services.png',
-  },
-  {
-    id: 4,
-    slug: 'post-sales-support',
-    title: 'Post-Sales & Customer Support Services',
-    description:
-      'Comprehensive post-sales support and customer service solutions to ensure long-term customer satisfaction.',
-    icon: '/icons/Post Sales & Customer Support Services.png',
-  },
-  {
-    id: 5,
-    slug: 'technology-training',
-    title: 'Technology & Product Training',
-    description:
-      'Specialized training programs for technology products and solutions to maximize user adoption and proficiency.',
-    icon: '/icons/Technology & Product Training.png',
-  },
-  {
-    id: 6,
-    slug: 'vendor-promotion',
-    title: 'Vendor Promotion & Augmentation',
-    description:
-      'Strategic vendor promotion and augmentation services to enhance market presence and operational capabilities.',
-    icon: '/icons/Vendor Promotion & Augmentation.png',
-  },
-  {
-    id: 7,
-    slug: 'marketing-business-development',
-    title: 'Marketing & Business Development Support',
-    description:
-      'Comprehensive marketing strategies and business development support to drive growth and market expansion.',
-    icon: '/icons/Marketing & Business Development Support.png',
-  },
-  {
-    id: 8,
-    slug: 'finance-services',
-    title: 'Finance Services',
-    description:
-      'Professional financial services and consulting to optimize your business financial performance and strategy.',
-    icon: '/icons/Financial Services.png',
-  },
-  {
-    id: 9,
-    slug: 'marketplace-solutions',
-    title: 'Marketplace',
-    description:
-      'Digital marketplace solutions and platforms to facilitate commerce and business transactions.',
-    icon: '/icons/Marketplace.png',
-  },
-];
+// Get services dynamically from services data
+const getServices = () => {
+  const serviceIds = getAllServiceIds();
+  return serviceIds
+    .map((id, index) => {
+      const serviceData = getServiceData(id);
+      if (!serviceData) return null;
+
+      // Map service IDs to appropriate icons
+      const iconMap: Record<string, string> = {
+        nxone: '/icons/Channel Sales & Enablement.png',
+        nable: '/icons/Technology & Product Training.png',
+        nsure: '/icons/Pre-Sales POV, Consultation & Professional Services.png',
+        ncircle: '/icons/Post Sales & Customer Support Services.png',
+      };
+
+      return {
+        id: index + 1,
+        slug: id,
+        title: serviceData.title,
+        description: serviceData.overview[0], // Use first paragraph of overview
+        icon: iconMap[id] || '/icons/Dashboard.png',
+      };
+    })
+    .filter(
+      (service): service is NonNullable<typeof service> => service !== null
+    );
+};
+
+const services = getServices();
 
 export default function ServicesPage() {
   const [activeService, setActiveService] = useState(0);
@@ -125,10 +82,13 @@ export default function ServicesPage() {
 
       const scrollTop = window.scrollY;
       const windowHeight = window.innerHeight;
+      const isMobile = window.innerWidth < 1024; // lg breakpoint
+
+      // Calculate section height based on screen size
+      const sectionHeight = isMobile ? windowHeight * 0.45 : windowHeight; // 45vh on mobile, full height on desktop
 
       // Calculate which service should be active based on scroll position
-      // Only consider the main scrollable section (whatWeDo), not the services section
-      const mainSectionHeight = whatWeDo.length * windowHeight; // Each whatWeDo item takes full screen height
+      const mainSectionHeight = whatWeDo.length * sectionHeight;
       const scrollProgress = Math.min(scrollTop / mainSectionHeight, 1);
       const serviceIndex = scrollProgress * whatWeDo.length;
       const clampedIndex = Math.max(
@@ -140,8 +100,8 @@ export default function ServicesPage() {
 
       // Calculate opacity for each section based on scroll position
       const newOpacities = whatWeDo.map((_, index) => {
-        const sectionStart = index * windowHeight;
-        const sectionEnd = (index + 1) * windowHeight;
+        const sectionStart = index * sectionHeight;
+        const sectionEnd = (index + 1) * sectionHeight;
 
         // Check if current scroll position is within this section
         const isInSection = scrollTop >= sectionStart && scrollTop < sectionEnd;
@@ -155,14 +115,18 @@ export default function ServicesPage() {
       // Check if services section is visible (separate from main scrollable section)
       if (servicesRef.current) {
         const servicesRect = servicesRef.current.getBoundingClientRect();
-        const isVisible = servicesRect.top < windowHeight * 0.8;
+        const isVisible = servicesRect.top < windowHeight * 0.7;
         setIsServicesVisible(isVisible);
       }
     };
 
     window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll); // Recalculate on resize
     handleScroll(); // Initial call
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
   }, []);
 
   const renderIcon = (service: (typeof whatWeDo)[0], index: number) => {
@@ -192,8 +156,11 @@ export default function ServicesPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation Bar */}
-      <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-lg">
+      {/* Mobile Header - Only shown on mobile */}
+      <div className="lg:hidden h-[20vh] w-full" />
+
+      {/* Navigation Bar - Hidden on mobile */}
+      <nav className="hidden lg:block sticky top-0 z-50 bg-white border-b border-gray-200 shadow-lg">
         <div className="max-w-6xl mx-auto px-4 py-6">
           <div className="flex justify-center gap-0 relative">
             {/* Progress Bar Background */}
@@ -228,9 +195,9 @@ export default function ServicesPage() {
       </nav>
 
       {/* Main Content */}
-      <div className="flex min-h-screen">
-        {/* Left Side - Fixed Icon (Half the page) */}
-        <div className="w-1/2 flex items-center justify-center top-20 h-screen sticky bg-amber-100">
+      <div className="flex flex-col lg:flex-row min-h-screen">
+        {/* Left Side - Fixed Icon (Hidden on mobile, shown on desktop) */}
+        <div className="hidden lg:flex lg:w-[30%] items-center justify-center top-20 h-screen sticky bg-amber-100">
           <div className="text-center">
             {/* Icon Container with Fade Effect */}
             <div className="relative w-full h-full">
@@ -240,33 +207,46 @@ export default function ServicesPage() {
         </div>
 
         {/* Right Side - Scrolling Content */}
-        <div className="w-1/2">
+        <div className="w-full lg:w-[70%]">
           <div ref={containerRef} className="relative">
             {whatWeDo.map((service, index) => (
               <div
                 key={service.id}
                 id={`service-${index}`}
-                className="min-h-screen flex items-center px-16 py-20"
+                className="min-h-[45vh] lg:min-h-screen flex items-center px-4 sm:px-8 lg:px-16 py-6 sm:py-8 lg:py-20"
               >
                 <div
-                  className="max-w-md"
+                  className="max-w-md mx-auto lg:mx-0"
                   style={{
                     opacity: sectionOpacities[index],
                     transition: 'opacity 0.3s ease',
                   }}
                 >
+                  {/* Mobile Icon - Only shown on mobile */}
+                  <div className="lg:hidden flex justify-center mb-6">
+                    <div className="w-24 h-24 bg-amber-100 rounded-full flex items-center justify-center">
+                      <Image
+                        src={service.icon}
+                        alt={service.title}
+                        width={64}
+                        height={64}
+                        className="object-contain"
+                      />
+                    </div>
+                  </div>
+
                   {/* Section Indicator */}
                   <div className="text-amber-600 text-sm font-semibold mb-4 uppercase tracking-wide">
                     {index + 1}/{whatWeDo.length}
                   </div>
 
                   {/* Service Title */}
-                  <h2 className="text-5xl font-bold text-amber-700 mb-6 leading-tight">
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-amber-700 mb-6 leading-tight">
                     {service.title}
                   </h2>
 
                   {/* Description */}
-                  <p className="text-gray-700 text-lg leading-relaxed mb-6 text-left">
+                  <p className="text-gray-700 text-base sm:text-lg leading-relaxed mb-6 text-left">
                     {service.description}
                   </p>
                 </div>
@@ -277,32 +257,35 @@ export default function ServicesPage() {
       </div>
 
       {/* Services Cards Section */}
-      <div ref={servicesRef} className="bg-gray-50 py-20 overflow-hidden">
-        <div className="max-w-6xl mx-auto px-8">
+      <div
+        ref={servicesRef}
+        className="bg-gray-50 py-12 sm:py-20 overflow-hidden"
+      >
+        <div className="max-w-6xl mx-auto px-4 sm:px-8">
           {/* Section Header */}
           <div
-            className={`text-center mb-16 transition-all duration-1000 ${
+            className={`text-center mb-12 sm:mb-16 transition-all duration-1000 ${
               isServicesVisible
                 ? 'opacity-100 translate-y-0'
                 : 'opacity-0 translate-y-8'
             }`}
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
               Our Services
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto">
               Comprehensive solutions designed to accelerate your business
               growth and operational excellence
             </p>
           </div>
 
           {/* Services Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
             {services.map((service, index) => (
               <Link
                 key={service.id}
                 href={`/services/${service.slug}`}
-                className={`block bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-8 border border-gray-100 transform hover:-translate-y-3 hover:scale-105 cursor-pointer ${
+                className={`block bg-white rounded-xl transition-all duration-300 p-4 sm:p-6 lg:p-8 border border-gray-100 transform hover:-translate-y-3 hover:scale-105 cursor-pointer ${
                   isServicesVisible
                     ? 'opacity-100 translate-y-0'
                     : 'opacity-0 translate-y-16'
@@ -311,10 +294,10 @@ export default function ServicesPage() {
                   transitionDelay: `${index * 150}ms`,
                 }}
               >
-                <div className="flex items-start space-x-6">
+                <div className="flex items-start space-x-4 sm:space-x-6">
                   {/* Service Icon */}
                   <div className="flex-shrink-0">
-                    <div className="w-16 h-16 bg-amber-100 rounded-lg flex items-center justify-center transition-all duration-200 hover:bg-amber-200 hover:scale-110 hover:rotate-3">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-amber-100 rounded-lg flex items-center justify-center transition-all duration-200 hover:bg-amber-200 hover:scale-110 hover:rotate-3">
                       <Image
                         src={service.icon}
                         alt={service.title}
@@ -327,10 +310,10 @@ export default function ServicesPage() {
 
                   {/* Service Content */}
                   <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-3 transition-colors duration-200 hover:text-amber-700">
+                    <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-3 transition-colors duration-200 hover:text-amber-700">
                       {service.title}
                     </h3>
-                    <p className="text-gray-600 leading-relaxed">
+                    <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
                       {service.description}
                     </p>
                   </div>

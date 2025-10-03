@@ -7,24 +7,12 @@ import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 import { Award } from 'lucide-react';
-
-interface Vendor {
-  id: number;
-  name: string;
-  description: string | null;
-  content: string | null;
-  logo_url: string | null;
-  image_url: string | null;
-  diagram_url: string | null;
-  type: string | null;
-  link: string | null;
-  created_at: string;
-  updated_at: string;
-}
+import { vendorsApi, type Vendor } from '@/lib/api';
+import { createSlug } from '@/lib/slug-utils';
 
 export default function VendorDetailPage() {
   const params = useParams();
-  const vendorId = params.id as string;
+  const vendorSlug = params.id as string;
 
   const [vendor, setVendor] = useState<Vendor | null>(null);
   const [loading, setLoading] = useState(true);
@@ -32,25 +20,24 @@ export default function VendorDetailPage() {
 
   useEffect(() => {
     const fetchVendor = async () => {
-      if (!vendorId) return;
+      if (!vendorSlug) return;
 
       try {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(`/api/vendors/${vendorId}`);
+        // Fetch all vendors and find the one matching the slug
+        const allVendors = await vendorsApi.getAll();
+        const foundVendor = allVendors.find(
+          v => createSlug(v.name) === vendorSlug
+        );
 
-        if (!response.ok) {
-          if (response.status === 404) {
-            setError('Vendor not found');
-          } else {
-            setError('Failed to fetch vendor details');
-          }
+        if (!foundVendor) {
+          setError('Vendor not found');
           return;
         }
 
-        const vendorData = await response.json();
-        setVendor(vendorData);
+        setVendor(foundVendor);
       } catch (err) {
         console.error('Error fetching vendor:', err);
         setError('Failed to load vendor details');
@@ -60,7 +47,7 @@ export default function VendorDetailPage() {
     };
 
     fetchVendor();
-  }, [vendorId]);
+  }, [vendorSlug]);
 
   if (loading) {
     return (
@@ -107,7 +94,7 @@ export default function VendorDetailPage() {
 
   return (
     <div className="min-h-screen bg-stone-100">
-      <div className="max-w-4xl mx-auto px-6 py-12">
+      <div className="max-w-4xl mx-auto px-0 sm:px-6 py-0 sm:py-12">
         {/* Card Container */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -228,29 +215,27 @@ export default function VendorDetailPage() {
               </div>
             </div>
           )}
-        </motion.div>
 
-        {/* Interested in Working Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="bg-gray-50 rounded-lg p-12 lg:p-16 text-center mt-8 mb-8"
-        >
-          <h3 className="text-3xl lg:text-4xl mb-8 font-bold text-gray-900">
-            Interested in Working with {vendor.name}?
-          </h3>
-          <p className="text-gray-600 mb-12 max-w-3xl mx-auto text-lg lg:text-xl leading-relaxed">
-            Ready to discuss your project requirements? Get in touch with us to
-            learn more about how {vendor.name} can help your business succeed.
-          </p>
-          <Link
-            href="/contact"
-            className="inline-block bg-orange-600 hover:bg-orange-700 text-white px-12 py-5 rounded-lg font-semibold text-xl transition-colors duration-300 shadow-lg hover:shadow-xl"
-          >
-            Contact us about this vendor
-            <span className="ml-2">→</span>
-          </Link>
+          {/* Interested in Working Section */}
+          <div className="px-8 pb-8 text-center">
+            <div className="rounded-lg py-8 lg:px-20 text-center">
+              <h3 className="text-xl lg:text-2xl mb-6 font-bold text-gray-900">
+                Interested in Working with {vendor.name}?
+              </h3>
+              <p className="text-gray-600 mb-8 max-w-3xl mx-auto text-base lg:text-lg leading-relaxed">
+                Ready to discuss your project requirements? Get in touch with us
+                to learn more about how {vendor.name} can help your business
+                succeed.
+              </p>
+              <Link
+                href="/contact"
+                className="inline-block bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-semibold text-base transition-colors duration-300 shadow-lg hover:shadow-xl"
+              >
+                Contact us about this vendor
+                <span className="ml-2">→</span>
+              </Link>
+            </div>
+          </div>
         </motion.div>
       </div>
     </div>

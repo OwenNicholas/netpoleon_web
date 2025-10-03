@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { vendorsApi, type Vendor } from '@/lib/api';
 import { getVendorPortfolioUrl } from '@/lib/storage';
+import { createSlug } from '@/lib/slug-utils';
 
 export default function OurVendors() {
   const [vendors, setVendors] = useState<Vendor[]>([]);
@@ -19,7 +20,9 @@ export default function OurVendors() {
     const fetchVendors = async () => {
       try {
         const data = await vendorsApi.getAll();
-        setVendors(data);
+        // Sort vendors alphabetically by name
+        const sortedData = data.sort((a, b) => a.name.localeCompare(b.name));
+        setVendors(sortedData);
       } catch (err) {
         setError('Failed to load vendors');
         console.error('Error fetching vendors:', err);
@@ -134,7 +137,7 @@ export default function OurVendors() {
     <div>
       {/* Header - Full Width */}
       <motion.section
-        className="relative h-[500px] overflow-hidden bg-gradient-to-r from-orange-600 to-amber-600 shadow-lg z-50 mb-16"
+        className="relative h-[500px] overflow-hidden bg-gradient-to-r from-orange-600 to-amber-600 shadow-lg z-1 mb-16"
         style={{
           clipPath:
             'polygon(0 0, 100% 0, 100% 90%, 80% 95%, 50% 100%, 20% 95%, 0 90%)',
@@ -145,11 +148,6 @@ export default function OurVendors() {
         variants={fadeInDown}
         transition={{ duration: 0.6 }}
       >
-        {/* Circular overlays at bottom */}
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-white/20 rounded-full transform translate-x-1/2 translate-y-1/2 blur-sm"></div>
-        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-white/15 rounded-full transform translate-x-1/3 translate-y-1/3 blur-md"></div>
-        <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-white/10 rounded-full transform translate-x-1/4 translate-y-1/4 blur-lg"></div>
-
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center text-white px-6 lg:px-8 max-w-4xl relative z-10">
             <h1 className="text-4xl lg:text-6xl mb-6 font-bold drop-shadow-lg">
@@ -175,8 +173,8 @@ export default function OurVendors() {
           transition={{ duration: 0.6 }}
         >
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-            <div className="flex items-center justify-between">
-              <div>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex-1">
                 <h3 className="text-lg mb-2 font-bold">
                   Complete Vendor Portfolio
                 </h3>
@@ -188,7 +186,7 @@ export default function OurVendors() {
               <motion.button
                 onClick={handlePortfolioDownload}
                 disabled={portfolioLoading || !portfolioUrl}
-                className={`px-6 py-3 rounded-lg transition-colors inline-flex items-center font-bold ${
+                className={`px-6 py-3 rounded-lg transition-colors inline-flex items-center justify-center font-bold w-full sm:w-auto ${
                   portfolioLoading || !portfolioUrl
                     ? 'bg-gray-400 cursor-not-allowed'
                     : 'bg-blue-600 hover:bg-blue-700 text-white'
@@ -247,10 +245,13 @@ export default function OurVendors() {
                   }}
                   className="w-full"
                 >
-                  <Link href={`/partners/${vendor.id}`} className="group block">
-                    <div className="bg-white rounded-lg shadow-sm border overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
+                  <Link
+                    href={`/partners/${createSlug(vendor.name)}`}
+                    className="group block h-full"
+                  >
+                    <div className="bg-white rounded-lg shadow-sm border overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] h-full flex flex-col">
                       <motion.div
-                        className="aspect-video overflow-hidden bg-white flex items-center justify-center p-8"
+                        className="aspect-video overflow-hidden bg-white flex items-center justify-center p-8 flex-shrink-0"
                         whileHover={{ scale: 1.05 }}
                         transition={{ duration: 0.3 }}
                       >
@@ -268,15 +269,15 @@ export default function OurVendors() {
                           </span>
                         )}
                       </motion.div>
-                      <div className="p-6">
+                      <div className="p-6 flex flex-col flex-grow">
                         <h3 className="text-xl mb-3 group-hover:text-blue-600 transition-colors font-bold">
                           {vendor.name}
                         </h3>
-                        <p className="text-gray-600 leading-relaxed mb-4 font-normal">
+                        <p className="text-gray-600 leading-relaxed mb-4 font-normal flex-grow">
                           {vendor.description ||
                             'Leading cybersecurity solutions provider with proven enterprise deployment success.'}
                         </p>
-                        <div className="flex items-center justify-right text-sm text-gray-500">
+                        <div className="flex items-center justify-right text-sm text-gray-500 mt-auto">
                           <motion.span
                             className="group-hover:text-blue-600 transition-colors font-normal"
                             whileHover={{ x: 5 }}
