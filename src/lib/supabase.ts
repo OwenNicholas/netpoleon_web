@@ -21,6 +21,7 @@ export interface Event {
   description: string | null;
   link: string | null;
   video: string | null;
+  image_url: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -63,6 +64,14 @@ export interface FeaturedEvent {
   id: number;
   event_id: number;
   featured_at: string;
+}
+
+export interface TeamMember {
+  id: number;
+  name: string;
+  role: string;
+  photo: string | null;
+  created_at: string;
 }
 
 // Note: Database operations are now handled by API routes in /app/api/

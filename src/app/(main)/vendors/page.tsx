@@ -12,7 +12,6 @@ export default function OurVendors() {
   const [vendors, setVendors] = useState<Vendor[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [displayedVendors, setDisplayedVendors] = useState<number>(8);
   const [portfolioUrl, setPortfolioUrl] = useState<string>('');
   const [portfolioLoading, setPortfolioLoading] = useState(false);
 
@@ -46,14 +45,6 @@ export default function OurVendors() {
     fetchVendors();
     fetchPortfolioUrl();
   }, []);
-
-  // Load more vendors
-  const loadMore = () => {
-    setDisplayedVendors(prev => {
-      const newCount = Math.min(prev + 8, vendors.length);
-      return newCount;
-    });
-  };
 
   // Handle portfolio download
   const handlePortfolioDownload = () => {
@@ -129,9 +120,7 @@ export default function OurVendors() {
     );
   }
 
-  // Calculate these values inside the render function so they update properly
-  const vendorsToShow = vendors.slice(0, displayedVendors);
-  const hasMoreVendors = displayedVendors < vendors.length;
+  const vendorsToShow = vendors;
 
   return (
     <div>
@@ -154,9 +143,8 @@ export default function OurVendors() {
               Our Cybersecurity Partners
             </h1>
             <p className="text-xl lg:text-2xl text-orange-100 max-w-3xl mx-auto font-normal drop-shadow-md">
-              Discover our carefully curated portfolio of leading cybersecurity
-              vendors, each vetted for innovation, reliability, and proven
-              enterprise deployment success.
+              Discover our broad portfolio of leading cybersecurity vendors to
+              vet for all your needs.
             </p>
           </div>
         </div>
@@ -180,7 +168,7 @@ export default function OurVendors() {
                 </h3>
                 <p className="text-gray-600 text-sm font-normal">
                   Download our comprehensive vendor portfolio with detailed
-                  specifications, comparisons, and implementation guides.
+                  description.
                 </p>
               </div>
               <motion.button
@@ -246,7 +234,7 @@ export default function OurVendors() {
                   className="w-full"
                 >
                   <Link
-                    href={`/partners/${createSlug(vendor.name)}`}
+                    href={`/vendors/${createSlug(vendor.name)}`}
                     className="group block h-full"
                   >
                     <div className="bg-white rounded-lg shadow-sm border overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] h-full flex flex-col">
@@ -311,46 +299,6 @@ export default function OurVendors() {
               </p>
             </div>
           </motion.section>
-        )}
-
-        {hasMoreVendors && (
-          <motion.div
-            className="text-center mt-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <motion.button
-              onClick={loadMore}
-              className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors inline-flex items-center font-bold"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Load More Partners
-              <span className="ml-2">→</span>
-            </motion.button>
-          </motion.div>
-        )}
-
-        {!hasMoreVendors && vendors.length > 8 && (
-          <motion.div
-            className="text-center mt-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <motion.button
-              onClick={() => setDisplayedVendors(8)}
-              className="bg-gray-600 text-white px-8 py-3 rounded-lg hover:bg-gray-700 transition-colors inline-flex items-center font-bold"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Show Less
-              <span className="ml-2">←</span>
-            </motion.button>
-          </motion.div>
         )}
       </div>
 
