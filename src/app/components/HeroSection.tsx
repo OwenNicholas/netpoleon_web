@@ -581,46 +581,46 @@ export default function HeroSection({ slides }: HeroSectionProps) {
         <div className="absolute -top-90 -left-90 md:-top-120 md:-left-150 lg:-top-200 lg:-left-200 xl:-top-200 xl:-left-350 2xl:-top-200 2xl:-left-500 w-[200%] h-[200%] scale-100 md:scale-105 lg:scale-100 xl:scale-120 2xl:scale-130">
           <StaticGlobe />
         </div>
-      </div>
 
-      {/* City Hover Areas */}
-      <div className="absolute inset-0 pointer-events-auto z-10">
-        {/* Sydney */}
-        <div className="absolute w-12 h-12 top-[60%] left-[65%] group cursor-pointer">
-          <div className="w-full h-full bg-transparent hover:bg-orange-500/20 rounded-full transition-colors duration-200"></div>
-          <div className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-            <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-black/80 text-white px-3 py-2 rounded text-sm font-bold whitespace-nowrap">
-              Sydney
+        {/* City Hover Areas - Positioned above globe */}
+        <div className="absolute inset-0 pointer-events-auto z-[100]">
+          {/* Sydney */}
+          <div className="absolute w-20 h-20 top-[60%] left-[65%] group cursor-pointer">
+            <div className="w-full h-full bg-red-500 hover:bg-red-600 rounded-full transition-colors duration-200 border-4 border-yellow-400 shadow-lg"></div>
+            <div className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+              <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-black text-white px-4 py-2 rounded-lg text-lg font-bold whitespace-nowrap shadow-lg border-2 border-white">
+                SYDNEY
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Melbourne */}
-        <div className="absolute w-12 h-12 top-[70%] left-[55%] group cursor-pointer">
-          <div className="w-full h-full bg-transparent hover:bg-orange-500/20 rounded-full transition-colors duration-200"></div>
-          <div className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-            <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-black/80 text-white px-3 py-2 rounded text-sm font-bold whitespace-nowrap">
-              Melbourne
+          {/* Melbourne */}
+          <div className="absolute w-20 h-20 top-[70%] left-[55%] group cursor-pointer">
+            <div className="w-full h-full bg-red-500 hover:bg-red-600 rounded-full transition-colors duration-200 border-4 border-yellow-400 shadow-lg"></div>
+            <div className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+              <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-black text-white px-4 py-2 rounded-lg text-lg font-bold whitespace-nowrap shadow-lg border-2 border-white">
+                MELBOURNE
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Brisbane */}
-        <div className="absolute w-12 h-12 top-[50%] left-[75%] group cursor-pointer">
-          <div className="w-full h-full bg-transparent hover:bg-orange-500/20 rounded-full transition-colors duration-200"></div>
-          <div className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-            <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-black/80 text-white px-3 py-2 rounded text-sm font-bold whitespace-nowrap">
-              Brisbane
+          {/* Brisbane */}
+          <div className="absolute w-20 h-20 top-[50%] left-[75%] group cursor-pointer">
+            <div className="w-full h-full bg-red-500 hover:bg-red-600 rounded-full transition-colors duration-200 border-4 border-yellow-400 shadow-lg"></div>
+            <div className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+              <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-black text-white px-4 py-2 rounded-lg text-lg font-bold whitespace-nowrap shadow-lg border-2 border-white">
+                BRISBANE
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Auckland */}
-        <div className="absolute w-12 h-12 top-[55%] left-[85%] group cursor-pointer">
-          <div className="w-full h-full bg-transparent hover:bg-orange-500/20 rounded-full transition-colors duration-200"></div>
-          <div className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-            <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-black/80 text-white px-3 py-2 rounded text-sm font-bold whitespace-nowrap">
-              Auckland
+          {/* Auckland */}
+          <div className="absolute w-20 h-20 top-[55%] left-[85%] group cursor-pointer">
+            <div className="w-full h-full bg-red-500 hover:bg-red-600 rounded-full transition-colors duration-200 border-4 border-yellow-400 shadow-lg"></div>
+            <div className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+              <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-black text-white px-4 py-2 rounded-lg text-lg font-bold whitespace-nowrap shadow-lg border-2 border-white">
+                AUCKLAND
+              </div>
             </div>
           </div>
         </div>
